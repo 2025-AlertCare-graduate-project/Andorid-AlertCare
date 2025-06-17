@@ -28,7 +28,7 @@ fun MainColorCard(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = Color(0xFFC9E9FF),
+                color = Color(0xFFC9E9FF).copy(alpha = 0.64f),
                 shape = RoundedCornerShape(roundShape)
             )
             .padding(vertical = 4.dp)
