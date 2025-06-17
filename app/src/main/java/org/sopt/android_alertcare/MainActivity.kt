@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import org.sopt.android_alertcare.ui.theme.AndroidAlertCareTheme
+import org.sopt.android_alertcare.ui.theme.presentation.VideoScreen
 import org.sopt.android_alertcare.ui.theme.presentation.navigation.MainNavHost
 
 class MainActivity : ComponentActivity() {
@@ -18,6 +19,8 @@ class MainActivity : ComponentActivity() {
                 MainNavHost(
                     navController = navController,
                 )
+
+//                VideoScreen(videoUrl = "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
             }
         }
     }
