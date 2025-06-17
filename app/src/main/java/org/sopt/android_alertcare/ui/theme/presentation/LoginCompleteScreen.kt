@@ -60,7 +60,7 @@ fun LoginCompleteScreen(
         NextButton(
             text = "시작하기",
             isEnabled = true,
-            onClick = {navController.navigate(ScreenRoute.MAIN_SCREEN) },
+            onClick = { navController.navigate(ScreenRoute.MAIN_SCREEN) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)

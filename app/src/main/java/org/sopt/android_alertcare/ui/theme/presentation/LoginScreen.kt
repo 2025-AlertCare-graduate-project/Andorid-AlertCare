@@ -15,7 +15,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import org.sopt.android_alertcare.ui.theme.presentation.component.NextButton
@@ -102,7 +101,7 @@ fun LoginScreen(
         NextButton(
             text = "다음",
             isEnabled = isFilled,
-            onClick = {navController.navigate(ScreenRoute.LOGIN_COMPLETE_SCREEN)},
+            onClick = { navController.navigate(ScreenRoute.LOGIN_COMPLETE_SCREEN) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
@@ -110,10 +109,3 @@ fun LoginScreen(
         )
     }
 }
-
-
-//@Preview
-//@Composable
-//private fun SettingTagScreen() {
-//    LoginScreen()
-//}
