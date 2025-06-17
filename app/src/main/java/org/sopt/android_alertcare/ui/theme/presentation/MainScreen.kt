@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import org.sopt.android_alertcare.R
 import org.sopt.android_alertcare.ui.theme.domain.FallDetection
 import org.sopt.android_alertcare.ui.theme.presentation.component.FallDetectionCard
@@ -32,7 +33,8 @@ import org.sopt.android_alertcare.ui.theme.presentation.component.MainColorCard
 
 @Composable
 fun MainScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
 
 
@@ -122,9 +124,9 @@ val dummyFallDetectionList = listOf(
     FallDetection(fallDate = "2025.05.21", fallTime = "20:30", isVideoAccessible = false)
 )
 
-
-@Preview
-@Composable
-private fun PreviewScreen() {
-    MainScreen()
-}
+//
+//@Preview
+//@Composable
+//private fun PreviewScreen() {
+//    MainScreen()
+//}

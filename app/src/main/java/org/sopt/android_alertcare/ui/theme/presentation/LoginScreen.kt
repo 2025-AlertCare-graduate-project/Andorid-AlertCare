@@ -17,13 +17,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import org.sopt.android_alertcare.ui.theme.presentation.component.NextButton
 import org.sopt.android_alertcare.ui.theme.presentation.component.TextFieldWithTitle
 import org.sopt.android_alertcare.ui.theme.presentation.component.TopBar
+import org.sopt.android_alertcare.ui.theme.presentation.navigation.ScreenRoute
 
 @Composable
 fun LoginScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
     val caregiverNameState = remember { mutableStateOf("") }
     val nameState = remember { mutableStateOf("") }
@@ -99,7 +102,7 @@ fun LoginScreen(
         NextButton(
             text = "다음",
             isEnabled = isFilled,
-            onClick = { TODO() },
+            onClick = {navController.navigate(ScreenRoute.LOGIN_COMPLETE_SCREEN)},
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
@@ -109,8 +112,8 @@ fun LoginScreen(
 }
 
 
-@Preview
-@Composable
-private fun SettingTagScreen() {
-    LoginScreen()
-}
+//@Preview
+//@Composable
+//private fun SettingTagScreen() {
+//    LoginScreen()
+//}

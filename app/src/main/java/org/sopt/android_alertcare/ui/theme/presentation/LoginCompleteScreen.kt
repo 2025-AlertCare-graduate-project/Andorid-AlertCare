@@ -19,13 +19,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import org.sopt.android_alertcare.R
 import org.sopt.android_alertcare.ui.theme.presentation.component.NextButton
+import org.sopt.android_alertcare.ui.theme.presentation.navigation.ScreenRoute
 
 
 @Composable
 fun LoginCompleteScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
+
 ) {
     Column(
         modifier = modifier
@@ -56,7 +60,7 @@ fun LoginCompleteScreen(
         NextButton(
             text = "시작하기",
             isEnabled = true,
-            onClick = { TODO() },
+            onClick = {navController.navigate(ScreenRoute.MAIN_SCREEN) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
