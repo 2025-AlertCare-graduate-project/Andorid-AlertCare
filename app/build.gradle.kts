@@ -1,11 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 
+
 }
 
+
+val properties = Properties().apply {
+    load(project.rootProject.file("local.properties").inputStream())
+}
 android {
     namespace = "org.sopt.android_alertcare"
     compileSdk = 35
@@ -18,6 +25,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "BASE_URL", properties["base.url"].toString())
+
     }
 
     buildTypes {
@@ -38,6 +47,8 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+
     }
 }
 
@@ -69,4 +80,15 @@ dependencies {
     //Media
     implementation("androidx.media3:media3-exoplayer:1.3.1")         
     implementation("androidx.media3:media3-ui:1.3.1")
+
+    // Network
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.kotlin.serialization.converter)
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation ("com.jakewharton.timber:timber:5.0.1")
+
 }
