@@ -1,0 +1,62 @@
+package org.sopt.android_alertcare.data
+
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
+import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import org.json.JSONArray
+import org.json.JSONObject
+import org.sopt.android_alertcare.BuildConfig
+import org.sopt.android_alertcare.core.extension.isJsonArray
+import org.sopt.android_alertcare.core.extension.isJsonObject
+import org.sopt.android_alertcare.data.service.SignUpService
+
+import retrofit2.Converter
+import retrofit2.Retrofit
+
+import timber.log.Timber
+
+object ApiFactory {
+    private val BASE_URL: String = BuildConfig.BASE_URL
+    private const val OKHTTP = "okhttp"
+    private const val UNIT_TAB = 4
+
+    private val json = Json {
+        ignoreUnknownKeys = true
+        prettyPrint = true
+    }
+
+    private val jsonConverter: Converter.Factory =
+        json.asConverterFactory("application/json".toMediaType())
+
+    private val loggingInterceptor: Interceptor = HttpLoggingInterceptor { message ->
+        when {
+            message.isJsonObject() -> Timber.tag(OKHTTP).d(JSONObject(message).toString(UNIT_TAB))
+            message.isJsonArray() -> Timber.tag(OKHTTP).d(JSONArray(message).toString(UNIT_TAB))
+            else -> Timber.tag(OKHTTP).d("CONNECTION INFO -> $message")
+        }
+    }.apply {
+        level =
+            if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+    }
+
+    private val client = OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
+        .build()
+
+    val retrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addConverterFactory(jsonConverter)
+            .build()
+    }
+
+    inline fun <reified T> create(): T = retrofit.create(T::class.java)
+}
+
+object ServicePool {
+    val signUpService by lazy { ApiFactory.create<SignUpService>() }
+}
