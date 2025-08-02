@@ -1,4 +1,4 @@
-package org.sopt.android_alertcare.ui.theme.presentation.component
+package org.sopt.android_alertcare.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

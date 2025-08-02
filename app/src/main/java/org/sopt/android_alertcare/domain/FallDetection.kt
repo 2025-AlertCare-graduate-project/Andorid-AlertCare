@@ -1,4 +1,4 @@
-package org.sopt.android_alertcare.ui.theme.domain
+package org.sopt.android_alertcare.domain
 
 data class FallDetection(
     val fallDate: String,

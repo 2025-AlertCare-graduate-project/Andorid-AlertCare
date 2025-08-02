@@ -1,4 +1,4 @@
-package org.sopt.android_alertcare.ui.theme.presentation
+package org.sopt.android_alertcare.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,16 +18,22 @@ class SignUpViewModel(
     private val _signUpState = MutableStateFlow<UiState<SignUpResponse>>(UiState.Empty)
     val signUpState: StateFlow<UiState<SignUpResponse>> = _signUpState
 
-    fun signUp(signUp: SignUp) {
+    fun signUp(signUp: SignUp, onSuccess: (userId: Int) -> Unit = {}) {
         viewModelScope.launch {
             _signUpState.value = UiState.Loading
 
             val result = signUpRepository.signUp(signUp)
 
             _signUpState.value = result.fold(
-                onSuccess = { UiState.Success(it) },
-                onFailure = { UiState.Error(it.message ?: "오류 발생") }
+                onSuccess = {
+                    onSuccess(it.id)  // userId 콜백
+                    UiState.Success(it)
+                },
+                onFailure = {
+                    UiState.Error(it.message ?: "오류 발생")
+                }
             )
         }
     }
+
 }

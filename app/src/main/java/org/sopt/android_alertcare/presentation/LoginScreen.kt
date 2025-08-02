@@ -1,4 +1,4 @@
-package org.sopt.android_alertcare.ui.theme.presentation
+package org.sopt.android_alertcare.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -18,12 +18,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.google.firebase.messaging.FirebaseMessaging
 import org.sopt.android_alertcare.core.common.ViewModelFactory
 import org.sopt.android_alertcare.domain.model.SignUp
-import org.sopt.android_alertcare.ui.theme.presentation.component.NextButton
-import org.sopt.android_alertcare.ui.theme.presentation.component.TextFieldWithTitle
-import org.sopt.android_alertcare.ui.theme.presentation.component.TopBar
-import org.sopt.android_alertcare.ui.theme.presentation.navigation.ScreenRoute
+import org.sopt.android_alertcare.presentation.component.NextButton
+import org.sopt.android_alertcare.presentation.component.TextFieldWithTitle
+import org.sopt.android_alertcare.presentation.component.TopBar
+import org.sopt.android_alertcare.presentation.navigation.ScreenRoute
 import timber.log.Timber
 
 @Composable
@@ -31,6 +32,8 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     viewmodel: SignUpViewModel = viewModel(factory = ViewModelFactory()),
+    fcmViewModel: FcmViewModel = viewModel(factory = ViewModelFactory())
+
 ) {
     val careGiverNameState = remember { mutableStateOf("") }
     val phoneState = remember { mutableStateOf("") }
@@ -45,6 +48,21 @@ fun LoginScreen(
     val isAgeValid = ageTextState.value.toIntOrNull()?.let { it in 1..120 } ?: false
 
     val isFilled = isCareGiverNameValid && isPhoneValid && isCareReceiverNameValid && isAgeValid
+
+
+    val fcmToken = remember { mutableStateOf("") }
+
+    // FCM 토큰을 미리 가져옴
+    LaunchedEffect(Unit) {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                fcmToken.value = task.result
+                Timber.tag("FCM").d("fcm 토큰 screen에서 감지: ${fcmToken.value}")
+            } else {
+                Timber.tag("FCM").e(task.exception, "FCM 토큰 가져오기 실패")
+            }
+        }
+    }
 
     LaunchedEffect(careGiverNameState.value) {
         if (isCareGiverNameValid && step.value < 1) step.value = 1
@@ -68,7 +86,7 @@ fun LoginScreen(
             .background(Color.White)
             .imePadding()
     ) {
-        TopBar()
+        TopBar("")
         Spacer(modifier = Modifier.height(8.dp))
 
         Column(
@@ -131,8 +149,13 @@ fun LoginScreen(
                     careReceiverPhoneNumber = phoneState.value
                 )
 
-                viewmodel.signUp(signUp)
-
+                //signUp 함수 이후 호출 이후, userId로 보내기
+                //추후 리팩토링 필요
+                viewmodel.signUp(signUp) { userId ->
+                    Timber
+                    fcmViewModel.registerFcmToken(userId.toLong(), fcmToken.value)
+                    navController.navigate(ScreenRoute.LOGIN_COMPLETE_SCREEN)
+                }
                 navController.navigate(ScreenRoute.LOGIN_COMPLETE_SCREEN)
             },
             modifier = Modifier

@@ -1,4 +1,4 @@
-package org.sopt.android_alertcare.ui.theme.presentation
+package org.sopt.android_alertcare.presentation
 
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
