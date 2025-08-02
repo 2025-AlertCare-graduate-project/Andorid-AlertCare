@@ -1,4 +1,4 @@
-package org.sopt.android_alertcare.presentation
+package org.sopt.android_alertcare.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

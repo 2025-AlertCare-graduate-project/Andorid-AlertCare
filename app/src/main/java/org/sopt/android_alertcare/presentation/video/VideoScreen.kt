@@ -1,7 +1,6 @@
-package org.sopt.android_alertcare.presentation
+package org.sopt.android_alertcare.presentation.video
 
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
