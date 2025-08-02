@@ -1,4 +1,4 @@
-package org.sopt.android_alertcare.ui.theme.presentation
+package org.sopt.android_alertcare.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,10 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import org.sopt.android_alertcare.R
-import org.sopt.android_alertcare.ui.theme.domain.FallDetection
-import org.sopt.android_alertcare.ui.theme.presentation.component.FallDetectionCard
-import org.sopt.android_alertcare.ui.theme.presentation.component.MainAgeCard
-import org.sopt.android_alertcare.ui.theme.presentation.component.MainColorCard
+import org.sopt.android_alertcare.domain.FallDetection
+import org.sopt.android_alertcare.presentation.component.FallDetectionCard
+import org.sopt.android_alertcare.presentation.component.MainAgeCard
+import org.sopt.android_alertcare.presentation.component.MainColorCard
 
 @Composable
 fun MainScreen(

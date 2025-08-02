@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
+import org.sopt.android_alertcare.presentation.navigation.MainNavHost
 import org.sopt.android_alertcare.ui.theme.AndroidAlertCareTheme
-import org.sopt.android_alertcare.ui.theme.presentation.navigation.MainNavHost
 import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                 )
 
-//                VideoScreen(videoUrl = "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
+//                VideoScreen(videoUrl = "https://alertcare-video.s3.ap-northeast-2.amazonaws.com/videos/958033e8dcf1413db7d0963871127a39_output_001.mp4")
             }
         }
     }

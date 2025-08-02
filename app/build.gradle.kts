@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 
+    id("com.google.gms.google-services")
+
 
 }
 
@@ -90,5 +92,16 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation ("com.jakewharton.timber:timber:5.0.1")
+
+
+    implementation(platform("com.google.firebase:firebase-bom:33.15.0"))
+    implementation("com.google.firebase:firebase-messaging")
+
+    // Retrofit
+//    implementation(libs.retrofit)
+//    implementation(libs.retrofit2.kotlinx.serialization.converter)
+
+//    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
 }

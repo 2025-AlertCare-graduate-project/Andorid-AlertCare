@@ -1,4 +1,4 @@
-package org.sopt.android_alertcare.ui.theme.presentation.navigation
+package org.sopt.android_alertcare.presentation.navigation
 
 
 object ScreenRoute {
