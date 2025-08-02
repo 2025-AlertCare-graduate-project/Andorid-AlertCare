@@ -1,4 +1,4 @@
-package org.sopt.android_alertcare.presentation
+package org.sopt.android_alertcare.presentation.login
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -21,6 +21,8 @@ import androidx.navigation.NavController
 import com.google.firebase.messaging.FirebaseMessaging
 import org.sopt.android_alertcare.core.common.ViewModelFactory
 import org.sopt.android_alertcare.domain.model.SignUp
+import org.sopt.android_alertcare.common.FcmViewModel
+import org.sopt.android_alertcare.presentation.signup.SignUpViewModel
 import org.sopt.android_alertcare.presentation.component.NextButton
 import org.sopt.android_alertcare.presentation.component.TextFieldWithTitle
 import org.sopt.android_alertcare.presentation.component.TopBar

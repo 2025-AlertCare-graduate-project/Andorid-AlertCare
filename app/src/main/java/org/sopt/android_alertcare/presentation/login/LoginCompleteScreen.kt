@@ -1,4 +1,4 @@
-package org.sopt.android_alertcare.presentation
+package org.sopt.android_alertcare.presentation.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

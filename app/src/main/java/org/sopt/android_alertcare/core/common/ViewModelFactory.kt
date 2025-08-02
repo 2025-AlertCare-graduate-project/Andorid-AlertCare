@@ -7,8 +7,8 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import org.sopt.android_alertcare.data.ServicePool
 import org.sopt.android_alertcare.data.repositoryimpl.FcmRepositoryImpl
 import org.sopt.android_alertcare.data.repositoryimpl.SignUpRepositoryImpl
-import org.sopt.android_alertcare.presentation.FcmViewModel
-import org.sopt.android_alertcare.presentation.SignUpViewModel
+import org.sopt.android_alertcare.common.FcmViewModel
+import org.sopt.android_alertcare.presentation.signup.SignUpViewModel
 
 class ViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
