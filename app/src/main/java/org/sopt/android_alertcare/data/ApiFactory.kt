@@ -11,6 +11,7 @@ import org.json.JSONObject
 import org.sopt.android_alertcare.BuildConfig
 import org.sopt.android_alertcare.core.extension.isJsonArray
 import org.sopt.android_alertcare.core.extension.isJsonObject
+import org.sopt.android_alertcare.data.service.FcmService
 import org.sopt.android_alertcare.data.service.SignUpService
 
 import retrofit2.Converter
@@ -59,4 +60,7 @@ object ApiFactory {
 
 object ServicePool {
     val signUpService by lazy { ApiFactory.create<SignUpService>() }
+    val fcmService by lazy { ApiFactory.create<FcmService>() }
+
+
 }

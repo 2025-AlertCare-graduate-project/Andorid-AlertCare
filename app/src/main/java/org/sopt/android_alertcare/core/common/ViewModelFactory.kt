@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import org.sopt.android_alertcare.data.ServicePool
+import org.sopt.android_alertcare.data.repositoryimpl.FcmRepositoryImpl
 import org.sopt.android_alertcare.data.repositoryimpl.SignUpRepositoryImpl
-import org.sopt.android_alertcare.ui.theme.presentation.SignUpViewModel
+import org.sopt.android_alertcare.presentation.FcmViewModel
+import org.sopt.android_alertcare.presentation.SignUpViewModel
 
 class ViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
@@ -20,6 +22,13 @@ class ViewModelFactory : ViewModelProvider.Factory {
                     SignUpRepositoryImpl(ServicePool.signUpService),
                 ) as T
             }
+
+            FcmViewModel::class.java -> {
+                FcmViewModel(
+                    FcmRepositoryImpl(ServicePool.fcmService),
+                ) as T
+            }
+
 
             else -> throw IllegalArgumentException("Unknown ViewModel Class")
         }
