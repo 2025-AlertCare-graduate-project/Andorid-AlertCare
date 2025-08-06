@@ -13,6 +13,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.sopt.android_alertcare.ui.theme.Orange
 
 @Composable
 fun NextButton(
@@ -21,7 +22,7 @@ fun NextButton(
     isEnabled: Boolean,
     onClick: () -> Unit
 ) {
-    val backgroundColor = if (isEnabled) Color(0xFF90CAF9) else Color(0xFFE0E0E0)
+    val backgroundColor = if (isEnabled) Orange else Color(0xFFE0E0E0)
 
     Button(
         onClick = onClick,

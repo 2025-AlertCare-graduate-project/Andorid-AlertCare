@@ -59,6 +59,12 @@ object AlertTypography {
         fontSize = 18.sp
     )
 
+    val Bold16 = TextStyle(
+        fontFamily = NanumSquareRound,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp
+    )
+
     val ExtraBold14 = TextStyle(
         fontFamily = NanumSquareRound,
         fontWeight = FontWeight.ExtraBold,

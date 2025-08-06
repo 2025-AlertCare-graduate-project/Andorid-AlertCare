@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.sopt.android_alertcare.ui.theme.AlertTypography
 
 @Composable
 fun CustomDialog(
@@ -57,7 +58,8 @@ fun CustomDialog(
                     text = subText,
                     fontSize = 14.sp,
                     color = Color.Gray,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    style = AlertTypography.Regular14
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(

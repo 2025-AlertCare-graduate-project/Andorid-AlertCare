@@ -21,6 +21,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.sopt.android_alertcare.ui.theme.AlertTypography
+import org.sopt.android_alertcare.ui.theme.Orange
 
 @Composable
 fun TextFieldWithTitle(
@@ -29,16 +31,16 @@ fun TextFieldWithTitle(
     maxLength: Int,
     textState: MutableState<String>,
     subText: String? = null,
-    isError: Boolean = false
+    isError: Boolean = false,
+    isValid: Boolean = false // ✅ 추가
 ) {
     Column {
         Text(
             text = titleText,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
+            style = AlertTypography.Bold24,
         )
         subText?.let {
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             Text(
                 text = it,
                 fontSize = 13.sp,
@@ -52,10 +54,14 @@ fun TextFieldWithTitle(
                 .background(Color.White, RoundedCornerShape(12.dp))
                 .border(
                     width = 1.dp,
-                    color = if (isError) Color.Red else Color(0xFFBDBDBD),
+                    color = when {
+                        isError -> Color.Red
+                        isValid -> Orange
+                        else -> Color(0xFFBDBDBD)
+                    },
                     shape = RoundedCornerShape(12.dp)
                 )
-                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .padding(horizontal = 20.dp, vertical = 12.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 BasicTextField(

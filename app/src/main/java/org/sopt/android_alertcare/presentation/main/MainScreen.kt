@@ -29,6 +29,8 @@ import org.sopt.android_alertcare.domain.model.FallDetection
 import org.sopt.android_alertcare.presentation.component.FallDetectionCard
 import org.sopt.android_alertcare.presentation.component.MainAgeCard
 import org.sopt.android_alertcare.presentation.component.MainColorCard
+import org.sopt.android_alertcare.presentation.util.FallDetectionStatus
+import org.sopt.android_alertcare.ui.theme.AlertTypography
 
 @Composable
 fun MainScreen(
@@ -71,8 +73,6 @@ fun MainScreen(
                 )
             }
 
-            MainAgeCard("87")
-
             HorizontalDivider(
                 modifier
                     .padding(top = 15.dp)
@@ -84,14 +84,14 @@ fun MainScreen(
                 Text(
                     modifier = Modifier.padding(start = 18.dp, top = 18.dp),
                     text = "최근 알람 확인하기",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
+                    style = AlertTypography.ExtraBold20,
                     textAlign = TextAlign.Start
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 MainColorCard(
                     modifier = modifier.padding(horizontal = 12.dp),
-                    text = "낙상 시점으로부터 1시간 지난 영상은 확인 불가능합니다."
+                    text = "낙상 후 12시간 지난 영상은 확인 불가능합니다.",
+                    isIcon = true,
                 )
             }
 
@@ -105,10 +105,9 @@ fun MainScreen(
                 items(dummyFallDetectionList) { fall ->
                     Spacer(modifier = Modifier.height(10.dp))
                     FallDetectionCard(
-                        fallDownDate = fall.fallDate,
-                        fallDownTime = fall.fallTime,
-                        isVideoAccessible = fall.isVideoAccessible,
-                        onVideoClick = { }
+                        status = FallDetectionStatus.CHECKED,
+                        dateTime = "2025.05.21 22:23",
+                        onVideoClick = {}
                     )
                 }
             }
