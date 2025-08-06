@@ -7,6 +7,6 @@ import retrofit2.http.POST
 
 interface FcmService {
 
-        @POST("api/fcm/register")
-        suspend fun sendToken(@Body request: FcmRequestDto): BaseResponse<Unit>
+    @POST("api/v1/fcm/register")
+    suspend fun sendToken(@Body request: FcmRequestDto): BaseResponse<Unit>
 }

@@ -5,6 +5,6 @@ data class SignUpResponse(
     val careReceiverAge: Int,
     val careReceiverName: String,
     val careReceiverPhoneNumber: String,
-    val fcmToken: String,
+    val fcmToken: String? =null,
     val id: Int
 )

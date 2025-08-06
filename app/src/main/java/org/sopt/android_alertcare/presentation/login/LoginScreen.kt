@@ -160,7 +160,6 @@ fun LoginScreen(
                 //signUp 함수 이후 호출 이후, userId로 보내기
                 //추후 리팩토링 필요
                 viewmodel.signUp(signUp) { userId ->
-                    Timber
                     fcmViewModel.registerFcmToken(userId.toLong(), fcmToken.value)
                     navController.navigate(ScreenRoute.LOGIN_COMPLETE_SCREEN)
                 }

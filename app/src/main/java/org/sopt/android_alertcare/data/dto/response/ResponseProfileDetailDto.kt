@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResponseSignUpDto(
+data class ResponseProfileDetailDto(
     @SerialName("careGiverName")
     val careGiverName: String,
     @SerialName("careReceiverAge")
@@ -15,7 +15,7 @@ data class ResponseSignUpDto(
     @SerialName("careReceiverPhoneNumber")
     val careReceiverPhoneNumber: String,
     @SerialName("fcmToken")
-    val fcmToken: String? = null,
+    val fcmToken: String,
     @SerialName("id")
     val id: Int
 )
