@@ -88,8 +88,8 @@ fun LoginScreen(
             .background(Color.White)
             .imePadding()
     ) {
-        TopBar("")
-        Spacer(modifier = Modifier.height(8.dp))
+        TopBar("회원가입")
+        Spacer(modifier = Modifier.height(20.dp))
 
         Column(
             modifier = Modifier
@@ -102,7 +102,8 @@ fun LoginScreen(
                     hint = "숫자만 입력해주세요",
                     maxLength = 3,
                     textState = ageTextState,
-                    isError = ageTextState.value.isNotEmpty() && !isAgeValid
+                    isError = ageTextState.value.isNotEmpty() && !isAgeValid,
+                    isValid = isAgeValid
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -112,7 +113,9 @@ fun LoginScreen(
                     titleText = "피보호자 성함을 입력해주세요",
                     hint = "성함을 입력해주세요",
                     maxLength = 5,
-                    textState = careReceiverNameState
+                    textState = careReceiverNameState,
+                    isValid = isCareReceiverNameValid
+
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -124,7 +127,9 @@ fun LoginScreen(
                     hint = "전화번호를 입력해주세요",
                     maxLength = 11,
                     textState = phoneState,
-                    isError = phoneState.value.isNotEmpty() && !isPhoneValid
+                    isError = phoneState.value.isNotEmpty() && !isPhoneValid,
+                    isValid = isPhoneValid
+
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -134,7 +139,8 @@ fun LoginScreen(
                     titleText = "보호자 성함을 입력해주세요",
                     hint = "성함을 입력해주세요",
                     maxLength = 5,
-                    textState = careGiverNameState
+                    textState = careGiverNameState,
+                    isValid = isCareGiverNameValid
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
