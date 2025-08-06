@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.sopt.android_alertcare.ui.theme.AlertTypography
 
 @Composable
 fun TopBar(
@@ -31,13 +32,13 @@ fun TopBar(
         Text(
             text = title,
             modifier = Modifier.padding(12.dp),
-            style = MaterialTheme.typography.titleMedium,
+            style = AlertTypography.Bold20,
             color = Color.Black
         )
         HorizontalDivider(
             Modifier
                 .fillMaxWidth()
-                .background(color = Color(0xFFE0E0E0)) // 연한 회색
+                .background(color = Color(0xFFE0E0E0))
         )
     }
 }
