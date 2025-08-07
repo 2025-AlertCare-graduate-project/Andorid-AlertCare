@@ -52,9 +52,9 @@ enum class FallDetectionStatus(
     companion object {
         fun from(videoAccessible: Boolean, checkedByUser: Boolean): FallDetectionStatus {
             return when {
-                videoAccessible && !checkedByUser -> VIDEO_AVAILABLE
-                videoAccessible && checkedByUser -> CHECKED
-                else -> EXPIRED
+                !videoAccessible -> EXPIRED
+                checkedByUser -> CHECKED
+                else -> VIDEO_AVAILABLE
             }
         }
     }
