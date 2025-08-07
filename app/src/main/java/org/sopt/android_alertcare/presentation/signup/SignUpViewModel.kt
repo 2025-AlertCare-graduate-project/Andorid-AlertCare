@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.sopt.android_alertcare.domain.model.SignUp
 import org.sopt.android_alertcare.domain.model.SignUpResponse
+import org.sopt.android_alertcare.domain.model.VideoList
 import org.sopt.android_alertcare.domain.repository.SignUpRepository
 import org.sopt.android_alertcare.presentation.util.UiState
 import timber.log.Timber
@@ -19,9 +20,16 @@ class SignUpViewModel(
     private val _signUpState = MutableStateFlow<UiState<SignUpResponse>>(UiState.Empty)
     val signUpState: StateFlow<UiState<SignUpResponse>> = _signUpState
 
-    fun signUp(signUp: SignUp, onSuccess: (userId: Int) -> Unit = {}) {
-        Timber.d("signUp() 함수 진입") // 함수 진입 로그
 
+    private val _videoListState = MutableStateFlow<UiState<List<VideoList>>>(UiState.Empty)
+    val videoListState: StateFlow<UiState<List<VideoList>>> = _videoListState
+
+
+    private val _videoUrlState = MutableStateFlow<UiState<String>>(UiState.Empty)
+    val videoUrlState: StateFlow<UiState<String>> = _videoUrlState
+
+
+    fun signUp(signUp: SignUp, onSuccess: (SignUpResponse) -> Unit = {}) {
         viewModelScope.launch {
             _signUpState.value = UiState.Loading
 
@@ -29,20 +37,56 @@ class SignUpViewModel(
 
             _signUpState.value = result.fold(
                 onSuccess = {
-                    Timber.d("✅ onSuccess 진입: userId = ${it.id}")
-
-                    val userId = it.id
-                    Timber.tag("SignUpViewModel").d("회원가입 성공, userId: $userId")
-                    onSuccess(it.id)  // userId 콜백
+                    Timber.d("회원가입 성공: ${it}")
+                    onSuccess(it)
                     UiState.Success(it)
                 },
                 onFailure = {
-                    Timber.e("❌ onFailure 진입: ${it.message}")
-
+                    Timber.e("회원가입 실패: ${it.message}")
                     UiState.Error(it.message ?: "오류 발생")
                 }
             )
         }
     }
+
+
+    fun fetchVideoList(phoneNumber: String) {
+        viewModelScope.launch {
+            _videoListState.value = UiState.Loading
+
+            val result = signUpRepository.videoList(phoneNumber)
+
+            _videoListState.value = result.fold(
+                onSuccess = {
+                    Timber.d("영상 리스트 불러오기 성공: $it")
+                    UiState.Success(it)
+                },
+                onFailure = {
+                    Timber.e("영상 리스트 불러오기 실패: ${it.message}")
+                    UiState.Error(it.message ?: "영상 데이터를 불러오는 중 오류 발생")
+                }
+            )
+        }
+    }
+
+    fun fetchVideoUrl(videoId: Long) {
+        viewModelScope.launch {
+            _videoUrlState.value = UiState.Loading
+
+            val result = signUpRepository.videoDetail(videoId)
+
+            _videoUrlState.value = result.fold(
+                onSuccess = {
+                    Timber.d("영상 URL 불러오기 성공: $it")
+                    UiState.Success(it)
+                },
+                onFailure = {
+                    Timber.e("영상 URL 불러오기 실패: ${it.message}")
+                    UiState.Error(it.message ?: "영상 URL을 불러오는 중 오류 발생")
+                }
+            )
+        }
+    }
+
 
 }
