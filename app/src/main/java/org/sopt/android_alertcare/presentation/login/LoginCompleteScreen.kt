@@ -28,7 +28,9 @@ import org.sopt.android_alertcare.presentation.navigation.ScreenRoute
 @Composable
 fun LoginCompleteScreen(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    phoneNumber: String,
+    careReceiverName: String
 
 ) {
     Column(
@@ -60,7 +62,11 @@ fun LoginCompleteScreen(
         NextButton(
             text = "시작하기",
             isEnabled = true,
-            onClick = { navController.navigate(ScreenRoute.MAIN_SCREEN) },
+            onClick = {
+
+                navController.navigate("main_screen/$phoneNumber/$careReceiverName")
+
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)

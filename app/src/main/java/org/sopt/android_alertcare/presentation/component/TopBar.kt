@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.android_alertcare.ui.theme.AlertTypography
+import org.sopt.android_alertcare.ui.theme.Orange
 
 @Composable
 fun TopBar(
@@ -38,7 +39,7 @@ fun TopBar(
         HorizontalDivider(
             Modifier
                 .fillMaxWidth()
-                .background(color = Color(0xFFE0E0E0))
+                .background(color = Orange)
         )
     }
 }

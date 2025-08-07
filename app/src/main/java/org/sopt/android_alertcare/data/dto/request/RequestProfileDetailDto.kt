@@ -1,14 +1,11 @@
 package org.sopt.android_alertcare.data.dto.request
 
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
-data class FcmRequestDto(
-    @SerialName("userId")
-    val userId: Long,
-    @SerialName("token")
-    val token: String
+data class RequestProfileDetailDto(
+    @SerialName("careReceiverPhoneNumber")
+    val careReceiverPhoneNumber: String
 )
-

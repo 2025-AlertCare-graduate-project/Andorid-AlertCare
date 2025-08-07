@@ -15,7 +15,7 @@ data class ResponseSignUpDto(
     @SerialName("careReceiverPhoneNumber")
     val careReceiverPhoneNumber: String,
     @SerialName("fcmToken")
-    val fcmToken: String,
+    val fcmToken: String? = null,
     @SerialName("id")
     val id: Int
 )
