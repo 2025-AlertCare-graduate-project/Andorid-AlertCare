@@ -12,9 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,21 +27,36 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import org.sopt.android_alertcare.R
+import org.sopt.android_alertcare.core.common.ViewModelFactory
 import org.sopt.android_alertcare.domain.model.FallDetection
 import org.sopt.android_alertcare.presentation.component.FallDetectionCard
 import org.sopt.android_alertcare.presentation.component.MainAgeCard
 import org.sopt.android_alertcare.presentation.component.MainColorCard
+import org.sopt.android_alertcare.presentation.signup.SignUpViewModel
 import org.sopt.android_alertcare.presentation.util.FallDetectionStatus
+import org.sopt.android_alertcare.presentation.util.UiState
 import org.sopt.android_alertcare.ui.theme.AlertTypography
+import timber.log.Timber
 
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    navController: NavController
-) {
+    navController: NavController,
+    phoneNumber: String,
+    careReceiverName: String,
+    viewmodel: SignUpViewModel = viewModel(factory = ViewModelFactory()),
 
+    ) {
+
+    val videoListState by viewmodel.videoListState.collectAsState()
+
+    // 최초 진입 시 비디오 리스트 가져오기
+    LaunchedEffect(Unit) {
+        viewmodel.fetchVideoList(phoneNumber)
+    }
 
     Column(
         modifier = modifier
@@ -62,7 +81,7 @@ fun MainScreen(
 
             Row {
                 Text(
-                    text = "주효은",
+                    text = careReceiverName,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                 )
@@ -97,34 +116,46 @@ fun MainScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp)
-            ) {
-                items(dummyFallDetectionList) { fall ->
-                    Spacer(modifier = Modifier.height(10.dp))
-                    FallDetectionCard(
-                        status = FallDetectionStatus.CHECKED,
-                        dateTime = "2025.05.21 22:23",
-                        onVideoClick = {}
+
+            when (val state = videoListState) {
+                is UiState.Success -> {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp)
+                    ) {
+                        items(state.data) { video ->
+                            Spacer(modifier = Modifier.height(10.dp))
+                            FallDetectionCard(
+                                status = FallDetectionStatus.from(video.videoAccessible, video.checkedByUser),
+                                dateTime = video.fallDetectTime,
+                                onVideoClick = {
+                                    val status = FallDetectionStatus.from(video.videoAccessible, video.checkedByUser)
+                                    if (status != FallDetectionStatus.EXPIRED) {
+                                        navController.navigate("video_screen/${video.id}")
+                                        Timber.tag("df").d(video.id.toString())
+                                    }
+                                }
+                            )
+                        }
+                    }
+                }
+
+                is UiState.Loading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                }
+
+                is UiState.Error -> {
+                    Text(
+                        text = "영상 데이터를 불러오지 못했습니다.",
+                        color = Color.Red,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
                 }
+
+                else -> {}
             }
+
         }
     }
 }
-
-
-val dummyFallDetectionList = listOf(
-    FallDetection(fallDate = "2025.05.21", fallTime = "22:23", isVideoAccessible = true),
-    FallDetection(fallDate = "2025.05.21", fallTime = "21:45", isVideoAccessible = true),
-    FallDetection(fallDate = "2025.05.21", fallTime = "20:30", isVideoAccessible = false)
-)
-
-//
-//@Preview
-//@Composable
-//private fun PreviewScreen() {
-//    MainScreen()
-//}

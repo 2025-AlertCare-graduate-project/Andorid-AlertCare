@@ -24,7 +24,6 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                 )
 
-//                VideoScreen(videoUrl = "https://alertcare-video.s3.ap-northeast-2.amazonaws.com/videos/958033e8dcf1413db7d0963871127a39_output_001.mp4")
             }
         }
     }

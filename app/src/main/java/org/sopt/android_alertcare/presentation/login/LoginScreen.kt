@@ -157,13 +157,14 @@ fun LoginScreen(
                     careReceiverPhoneNumber = phoneState.value
                 )
 
-                //signUp 함수 이후 호출 이후, userId로 보내기
-                //추후 리팩토링 필요
-                viewmodel.signUp(signUp) { userId ->
-                    fcmViewModel.registerFcmToken(userId.toLong(), fcmToken.value)
-                    navController.navigate(ScreenRoute.LOGIN_COMPLETE_SCREEN)
+                viewmodel.signUp(signUp) { response ->
+                    fcmViewModel.registerFcmToken(response.id.toLong(), fcmToken.value)
+
+                    // 보호자 전화번호와 이름을 navController로 넘기기
+                    navController.navigate(
+                        "login_complete_screen/${response.careReceiverPhoneNumber}/${response.careReceiverName}"
+                    )
                 }
-                navController.navigate(ScreenRoute.LOGIN_COMPLETE_SCREEN)
             },
             modifier = Modifier
                 .fillMaxWidth()
