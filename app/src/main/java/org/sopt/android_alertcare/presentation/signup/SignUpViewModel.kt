@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.sopt.android_alertcare.domain.model.SignUp
 import org.sopt.android_alertcare.domain.model.SignUpResponse
+import org.sopt.android_alertcare.domain.model.VideoCheck
 import org.sopt.android_alertcare.domain.model.VideoList
 import org.sopt.android_alertcare.domain.repository.SignUpRepository
 import org.sopt.android_alertcare.presentation.util.UiState
@@ -28,6 +29,9 @@ class SignUpViewModel(
     private val _videoUrlState = MutableStateFlow<UiState<String>>(UiState.Empty)
     val videoUrlState: StateFlow<UiState<String>> = _videoUrlState
 
+
+    private val _videoCheckedState = MutableStateFlow<UiState<VideoCheck>>(UiState.Empty)
+    val videoCheckedState: StateFlow<UiState<VideoCheck>> = _videoCheckedState
 
     fun signUp(signUp: SignUp, onSuccess: (SignUpResponse) -> Unit = {}) {
         viewModelScope.launch {
@@ -83,6 +87,23 @@ class SignUpViewModel(
                 onFailure = {
                     Timber.e("영상 URL 불러오기 실패: ${it.message}")
                     UiState.Error(it.message ?: "영상 URL을 불러오는 중 오류 발생")
+                }
+            )
+        }
+    }
+
+    fun patchVideoChecked(videoId: Long) {
+        viewModelScope.launch {
+            _videoCheckedState.value = UiState.Loading
+
+            val result = signUpRepository.videoChecked(videoId)
+
+            _videoCheckedState.value = result.fold(
+                onSuccess = {
+                    UiState.Success(it)
+                },
+                onFailure = {
+                    UiState.Error(it.message ?: "영상 확인 실패")
                 }
             )
         }
