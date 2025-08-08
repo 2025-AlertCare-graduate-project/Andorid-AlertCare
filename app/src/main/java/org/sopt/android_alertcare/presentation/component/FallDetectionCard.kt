@@ -22,12 +22,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.android_alertcare.R
 import org.sopt.android_alertcare.presentation.util.FallDetectionStatus
+import org.sopt.android_alertcare.ui.theme.AlertTypography
 
 @Composable
 fun FallDetectionCard(
@@ -66,8 +66,10 @@ fun FallDetectionCard(
                     Text(
                         text = status.label,
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        style = AlertTypography.ExtraBold14
                     )
+                    Spacer(modifier = Modifier.padding(top = 6.dp))
+
                     Text(
                         text = dateTime,
                         fontSize = 13.sp,
