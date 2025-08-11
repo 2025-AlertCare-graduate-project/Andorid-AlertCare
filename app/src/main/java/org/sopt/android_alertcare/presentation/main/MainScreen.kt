@@ -31,14 +31,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import org.sopt.android_alertcare.R
 import org.sopt.android_alertcare.core.common.ViewModelFactory
-import org.sopt.android_alertcare.domain.model.FallDetection
 import org.sopt.android_alertcare.presentation.component.FallDetectionCard
-import org.sopt.android_alertcare.presentation.component.MainAgeCard
 import org.sopt.android_alertcare.presentation.component.MainColorCard
+import org.sopt.android_alertcare.presentation.component.TopBarWithIcon
 import org.sopt.android_alertcare.presentation.signup.SignUpViewModel
 import org.sopt.android_alertcare.presentation.util.FallDetectionStatus
 import org.sopt.android_alertcare.presentation.util.UiState
 import org.sopt.android_alertcare.ui.theme.AlertTypography
+import org.sopt.android_alertcare.ui.theme.Orange
 import timber.log.Timber
 
 @Composable
@@ -63,6 +63,8 @@ fun MainScreen(
             .fillMaxSize()
             .background(Color.White),
     ) {
+
+        TopBarWithIcon("", icon = painterResource(id = R.drawable.ic_setting), onIconClick = {})
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -92,11 +94,11 @@ fun MainScreen(
                 )
             }
 
+            Spacer(modifier = Modifier.height(32.dp))
+
+
             HorizontalDivider(
-                modifier
-                    .padding(top = 15.dp)
-                    .fillMaxWidth(),
-                thickness = 7.dp, color = Color(0xFFC9E9FF),
+                thickness = 7.dp, color = Orange.copy(alpha = 0.4f)
             )
 
             Column(Modifier.fillMaxWidth()) {
@@ -106,7 +108,7 @@ fun MainScreen(
                     style = AlertTypography.ExtraBold20,
                     textAlign = TextAlign.Start
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 MainColorCard(
                     modifier = modifier.padding(horizontal = 12.dp),
                     text = "낙상 후 12시간 지난 영상은 확인 불가능합니다.",
@@ -114,7 +116,7 @@ fun MainScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(6.dp))
 
 
             when (val state = videoListState) {
@@ -125,12 +127,17 @@ fun MainScreen(
                             .padding(horizontal = 12.dp)
                     ) {
                         items(state.data) { video ->
-                            Spacer(modifier = Modifier.height(10.dp))
                             FallDetectionCard(
-                                status = FallDetectionStatus.from(video.videoAccessible, video.checkedByUser),
+                                status = FallDetectionStatus.from(
+                                    video.videoAccessible,
+                                    video.checkedByUser
+                                ),
                                 dateTime = video.fallDetectTime,
                                 onVideoClick = {
-                                    val status = FallDetectionStatus.from(video.videoAccessible, video.checkedByUser)
+                                    val status = FallDetectionStatus.from(
+                                        video.videoAccessible,
+                                        video.checkedByUser
+                                    )
                                     if (status != FallDetectionStatus.EXPIRED) {
                                         navController.navigate("video_screen/${video.id}")
                                         Timber.tag("df").d(video.id.toString())

@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.sopt.android_alertcare.domain.model.LogIn
 import org.sopt.android_alertcare.domain.model.SignUp
 import org.sopt.android_alertcare.domain.model.SignUpResponse
+import org.sopt.android_alertcare.domain.model.VideoCheck
 import org.sopt.android_alertcare.domain.model.VideoList
 import org.sopt.android_alertcare.domain.repository.SignUpRepository
 import org.sopt.android_alertcare.presentation.util.UiState
@@ -31,6 +32,9 @@ class SignUpViewModel(
     private val _loginState = MutableStateFlow<UiState<SignUpResponse>>(UiState.Empty)
     val loginState: StateFlow<UiState<SignUpResponse>> = _loginState
 
+
+    private val _videoCheckedState = MutableStateFlow<UiState<VideoCheck>>(UiState.Empty)
+    val videoCheckedState: StateFlow<UiState<VideoCheck>> = _videoCheckedState
 
     fun signUp(signUp: SignUp, onSuccess: (SignUpResponse) -> Unit = {}) {
         viewModelScope.launch {
@@ -106,6 +110,23 @@ class SignUpViewModel(
                 onFailure = {
                     Timber.e("로그인 실패: ${it.message}")
                     UiState.Error(it.message ?: "오류 발생")
+                }
+            )
+        }
+    }
+
+    fun patchVideoChecked(videoId: Long) {
+        viewModelScope.launch {
+            _videoCheckedState.value = UiState.Loading
+
+            val result = signUpRepository.videoChecked(videoId)
+
+            _videoCheckedState.value = result.fold(
+                onSuccess = {
+                    UiState.Success(it)
+                },
+                onFailure = {
+                    UiState.Error(it.message ?: "영상 확인 실패")
                 }
             )
         }

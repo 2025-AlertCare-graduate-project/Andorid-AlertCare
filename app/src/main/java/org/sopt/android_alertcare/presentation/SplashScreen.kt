@@ -28,9 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.sopt.android_alertcare.R
-import org.sopt.android_alertcare.ui.theme.BaseOrange
 import org.sopt.android_alertcare.ui.theme.MainOrange
-import org.sopt.android_alertcare.ui.theme.Orange
 
 @Composable
 fun SplashScreen(
@@ -95,7 +93,7 @@ fun SplashScreen(
 
             Row {
                 Text(
-                    text = "AlertCare가 처음이신가요?",
+                    text = "AlertCare가 처음이신가요? |",
                     color = Color.Gray,
                     fontSize = 14.sp
                 )
@@ -105,7 +103,6 @@ fun SplashScreen(
                     color = Color.Gray,
                     fontSize = 14.sp,
                     modifier = Modifier.clickable { onSignUpClick() },
-                    textDecoration = TextDecoration.Underline
                 )
             }
             Spacer(modifier = Modifier.height(32.dp))

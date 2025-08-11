@@ -4,9 +4,11 @@ import org.sopt.android_alertcare.data.dto.request.RequestLoginDto
 import org.sopt.android_alertcare.data.dto.request.RequestSignUpDto
 import org.sopt.android_alertcare.data.dto.response.BaseResponse
 import org.sopt.android_alertcare.data.dto.response.ResponseSignUpDto
+import org.sopt.android_alertcare.data.dto.response.ResponseVideoCheckDto
 import org.sopt.android_alertcare.data.dto.response.ResponseVideoList
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -33,4 +35,10 @@ interface SignUpService {
     suspend fun logIn(
         @Body requestLoginDto: RequestLoginDto
     ): BaseResponse<ResponseSignUpDto>
+
+
+    @PATCH("/api/v1/videos/{id}/check")
+    suspend fun videoCheck(
+        @Path("id") id: Long
+    ): BaseResponse<ResponseVideoCheckDto>
 }

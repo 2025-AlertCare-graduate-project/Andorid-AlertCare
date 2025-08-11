@@ -40,11 +40,20 @@ fun VideoScreen(
     onConfirmClick: () -> Unit = {}
 ) {
     val videoUrlState by viewmodel.videoUrlState.collectAsState()
+    val videoCheckedState by viewmodel.videoCheckedState.collectAsState()
 
     LaunchedEffect(videoId) {
         viewmodel.fetchVideoUrl(videoId)
     }
+    LaunchedEffect(videoCheckedState) {
+        when (videoCheckedState) {
+            is UiState.Success -> {
+                onConfirmClick()
+            }
 
+            else -> Unit
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -112,21 +121,26 @@ fun VideoScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
+            val isPatching = videoCheckedState is UiState.Loading
+
             Button(
-                onClick = onConfirmClick,
+                onClick = { viewmodel.patchVideoChecked(videoId) },
+                enabled = !isPatching,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp)
                     .navigationBarsPadding(),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(
-                    Orange
-                )
+                colors = ButtonDefaults.buttonColors(Orange)
             ) {
-                Text(
-                    text = "확인 완료",
-                    fontSize = 16.sp
-                )
+                if (isPatching) {
+                    CircularProgressIndicator(
+                        strokeWidth = 2.dp,
+                        color = Color.White
+                    )
+                } else {
+                    Text(text = "확인 완료", fontSize = 16.sp)
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
