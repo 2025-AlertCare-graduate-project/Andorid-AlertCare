@@ -30,7 +30,7 @@ import org.sopt.android_alertcare.presentation.navigation.ScreenRoute
 import timber.log.Timber
 
 @Composable
-fun LoginScreen(
+fun SignUpScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     viewmodel: SignUpViewModel = viewModel(factory = ViewModelFactory()),
@@ -160,10 +160,8 @@ fun LoginScreen(
                 viewmodel.signUp(signUp) { response ->
                     fcmViewModel.registerFcmToken(response.id.toLong(), fcmToken.value)
 
-                    // 보호자 전화번호와 이름을 navController로 넘기기
-                    navController.navigate(
-                        "login_complete_screen/${response.careReceiverPhoneNumber}/${response.careReceiverName}"
-                    )
+                    navController.navigate(ScreenRoute.SIGN_UP_COMPLETE_SCREEN)
+
                 }
             },
             modifier = Modifier
