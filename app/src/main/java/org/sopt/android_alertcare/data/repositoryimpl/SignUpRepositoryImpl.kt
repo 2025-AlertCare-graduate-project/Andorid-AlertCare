@@ -3,6 +3,7 @@ package org.sopt.android_alertcare.data.repositoryimpl
 import org.sopt.android_alertcare.data.mapper.toData.toData
 import org.sopt.android_alertcare.data.mapper.toDomain.toDomain
 import org.sopt.android_alertcare.data.service.SignUpService
+import org.sopt.android_alertcare.domain.model.LogIn
 import org.sopt.android_alertcare.domain.model.SignUp
 import org.sopt.android_alertcare.domain.model.SignUpResponse
 import org.sopt.android_alertcare.domain.model.VideoList
@@ -32,5 +33,10 @@ class SignUpRepositoryImpl(
         response.data ?: throw IllegalStateException("영상 상세 응답이 null")
     }
 
-
+    override suspend fun logIn(logIn: LogIn): Result<SignUpResponse> = runCatching {
+        val requestDto = logIn.toData()
+        val response = signUpService.logIn(requestDto)
+        response.data?.toDomain()
+            ?: throw IllegalStateException("로그인 응답이 null")
+    }
 }
