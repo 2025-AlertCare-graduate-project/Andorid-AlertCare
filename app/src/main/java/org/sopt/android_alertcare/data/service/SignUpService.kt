@@ -1,5 +1,6 @@
 package org.sopt.android_alertcare.data.service
 
+import org.sopt.android_alertcare.data.dto.request.RequestLoginDto
 import org.sopt.android_alertcare.data.dto.request.RequestSignUpDto
 import org.sopt.android_alertcare.data.dto.response.BaseResponse
 import org.sopt.android_alertcare.data.dto.response.ResponseSignUpDto
@@ -28,6 +29,12 @@ interface SignUpService {
     suspend fun videoDetail(
         @Path("id") id: Long
     ): BaseResponse<String>
+
+
+    @POST("/api/v1/user/login")
+    suspend fun logIn(
+        @Body requestLoginDto: RequestLoginDto
+    ): BaseResponse<ResponseSignUpDto>
 
 
     @PATCH("/api/v1/videos/{id}/check")

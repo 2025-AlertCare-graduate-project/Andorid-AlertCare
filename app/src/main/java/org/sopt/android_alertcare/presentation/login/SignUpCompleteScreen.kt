@@ -26,13 +26,11 @@ import org.sopt.android_alertcare.presentation.navigation.ScreenRoute
 
 
 @Composable
-fun LoginCompleteScreen(
+fun SignUpCompleteScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    phoneNumber: String,
-    careReceiverName: String
 
-) {
+    ) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -64,8 +62,11 @@ fun LoginCompleteScreen(
             isEnabled = true,
             onClick = {
 
-                navController.navigate("main_screen/$phoneNumber/$careReceiverName")
-
+                navController.navigate(ScreenRoute.SPLASH_SCREEN) {
+                    // Splash만 남기고 위의 스택 정리
+                    popUpTo(ScreenRoute.SPLASH_SCREEN) { inclusive = true }
+                    launchSingleTop = true
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()

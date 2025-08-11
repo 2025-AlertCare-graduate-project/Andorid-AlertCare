@@ -7,20 +7,33 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import org.sopt.android_alertcare.presentation.login.LoginCompleteScreen
-import org.sopt.android_alertcare.presentation.login.LoginScreen
+import org.sopt.android_alertcare.presentation.SplashScreen
+import org.sopt.android_alertcare.presentation.login.SignUpCompleteScreen
+import org.sopt.android_alertcare.presentation.login.SignUpScreen
 import org.sopt.android_alertcare.presentation.main.MainScreen
 import org.sopt.android_alertcare.presentation.navigation.ScreenRoute.VIDEO_SCREEN
+import org.sopt.android_alertcare.presentation.signup.LoginCompleteScreen
+import org.sopt.android_alertcare.presentation.signup.LoginScreen
 import org.sopt.android_alertcare.presentation.video.VideoScreen
 
 @Composable
 fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController,
-        startDestination = ScreenRoute.LOGIN_SCREEN,
+        startDestination = ScreenRoute.SPLASH_SCREEN,
         modifier = modifier
     ) {
 
+        composable(ScreenRoute.SPLASH_SCREEN) {
+            SplashScreen(
+                onLoginClick = { navController.navigate(ScreenRoute.LOGIN_SCREEN) },
+                onSignUpClick = { navController.navigate(ScreenRoute.SIGN_UP_SCREEN) }
+            )
+        }
+
+        composable(ScreenRoute.LOGIN_SCREEN) {
+            LoginScreen(navController = navController)
+        }
 
         composable(
             "${ScreenRoute.MAIN_SCREEN}/{phoneNumber}/{careReceiverName}"
@@ -37,6 +50,14 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
 
 
         composable(
+            route = ScreenRoute.SIGN_UP_COMPLETE_SCREEN
+        ) { backStackEntry ->
+            SignUpCompleteScreen(
+                navController = navController,
+            )
+        }
+
+        composable(
             route = "${ScreenRoute.LOGIN_COMPLETE_SCREEN}/{phoneNumber}/{careReceiverName}"
         ) { backStackEntry ->
             val phoneNumber = backStackEntry.arguments?.getString("phoneNumber") ?: ""
@@ -48,7 +69,7 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
                 careReceiverName = careReceiverName
             )
         }
-        composable(ScreenRoute.LOGIN_SCREEN) { LoginScreen(navController = navController) }
+        composable(ScreenRoute.SIGN_UP_SCREEN) { SignUpScreen(navController = navController) }
 
         composable(
             route = VIDEO_SCREEN,

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.sopt.android_alertcare.domain.model.LogIn
 import org.sopt.android_alertcare.domain.model.SignUp
 import org.sopt.android_alertcare.domain.model.SignUpResponse
 import org.sopt.android_alertcare.domain.model.VideoCheck
@@ -21,13 +22,15 @@ class SignUpViewModel(
     private val _signUpState = MutableStateFlow<UiState<SignUpResponse>>(UiState.Empty)
     val signUpState: StateFlow<UiState<SignUpResponse>> = _signUpState
 
-
     private val _videoListState = MutableStateFlow<UiState<List<VideoList>>>(UiState.Empty)
     val videoListState: StateFlow<UiState<List<VideoList>>> = _videoListState
 
 
     private val _videoUrlState = MutableStateFlow<UiState<String>>(UiState.Empty)
     val videoUrlState: StateFlow<UiState<String>> = _videoUrlState
+
+    private val _loginState = MutableStateFlow<UiState<SignUpResponse>>(UiState.Empty)
+    val loginState: StateFlow<UiState<SignUpResponse>> = _loginState
 
 
     private val _videoCheckedState = MutableStateFlow<UiState<VideoCheck>>(UiState.Empty)
@@ -87,6 +90,26 @@ class SignUpViewModel(
                 onFailure = {
                     Timber.e("영상 URL 불러오기 실패: ${it.message}")
                     UiState.Error(it.message ?: "영상 URL을 불러오는 중 오류 발생")
+                }
+            )
+        }
+    }
+
+    fun logIn(logIn: LogIn, onSuccess: (SignUpResponse) -> Unit = {}) {
+        viewModelScope.launch {
+            _signUpState.value = UiState.Loading
+
+            val result = signUpRepository.logIn(logIn)
+
+            _signUpState.value = result.fold(
+                onSuccess = {
+                    Timber.d("로그인 성공: ${it}")
+                    onSuccess(it)
+                    UiState.Success(it)
+                },
+                onFailure = {
+                    Timber.e("로그인 실패: ${it.message}")
+                    UiState.Error(it.message ?: "오류 발생")
                 }
             )
         }
