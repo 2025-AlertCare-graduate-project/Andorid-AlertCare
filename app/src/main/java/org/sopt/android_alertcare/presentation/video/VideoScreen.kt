@@ -27,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import org.sopt.android_alertcare.core.common.ViewModelFactory
 import org.sopt.android_alertcare.presentation.component.TopBar
+import org.sopt.android_alertcare.presentation.navigation.ScreenRoute
 import org.sopt.android_alertcare.presentation.signup.SignUpViewModel
 import org.sopt.android_alertcare.presentation.util.UiState
 import org.sopt.android_alertcare.ui.theme.AlertTypography
@@ -124,7 +125,13 @@ fun VideoScreen(
             val isPatching = videoCheckedState is UiState.Loading
 
             Button(
-                onClick = { viewmodel.patchVideoChecked(videoId) },
+                onClick = {
+                    viewmodel.patchVideoChecked(videoId)
+                    navController.navigate(ScreenRoute.MAIN_SCREEN) {
+                        popUpTo(ScreenRoute.MAIN_SCREEN) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
                 enabled = !isPatching,
                 modifier = Modifier
                     .fillMaxWidth()

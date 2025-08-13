@@ -88,6 +88,8 @@ fun SignUpScreen(
             .background(Color.White)
             .imePadding()
     ) {
+        Spacer(modifier = Modifier.height(12.dp))
+
         TopBar("회원가입")
         Spacer(modifier = Modifier.height(20.dp))
 

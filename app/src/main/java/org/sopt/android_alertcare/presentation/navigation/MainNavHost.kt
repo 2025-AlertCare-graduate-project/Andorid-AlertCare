@@ -12,6 +12,7 @@ import org.sopt.android_alertcare.presentation.login.SignUpCompleteScreen
 import org.sopt.android_alertcare.presentation.login.SignUpScreen
 import org.sopt.android_alertcare.presentation.main.MainScreen
 import org.sopt.android_alertcare.presentation.navigation.ScreenRoute.VIDEO_SCREEN
+import org.sopt.android_alertcare.presentation.setting.SettingsScreen
 import org.sopt.android_alertcare.presentation.signup.LoginCompleteScreen
 import org.sopt.android_alertcare.presentation.signup.LoginScreen
 import org.sopt.android_alertcare.presentation.video.VideoScreen
@@ -79,6 +80,7 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
             VideoScreen(videoId = videoId, navController = navController)
         }
 
+        composable(ScreenRoute.SETTING_SCREEN) { SettingsScreen(navController = navController) }
 
     }
 }
