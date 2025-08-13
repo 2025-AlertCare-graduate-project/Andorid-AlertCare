@@ -11,5 +11,6 @@ object ScreenRoute {
     const val LOGIN_COMPLETE_SCREEN = "login_complete_screen"
 
     const val SPLASH_SCREEN = "splash_screen"
+    const val SETTING_SCREEN = "setting_screen"
 
 }

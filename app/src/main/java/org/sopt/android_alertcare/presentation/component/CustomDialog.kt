@@ -44,6 +44,10 @@ fun CustomDialog(
                 .clip(RoundedCornerShape(16.dp))
                 .background(Color.White)
                 .padding(24.dp)
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {  }
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
