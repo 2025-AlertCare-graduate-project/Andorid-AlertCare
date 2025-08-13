@@ -81,6 +81,8 @@ fun LoginScreen(
             .background(Color.White)
             .imePadding()
     ) {
+        Spacer(modifier = Modifier.height(12.dp))
+
         TopBar("로그인")
         Spacer(modifier = Modifier.height(20.dp))
 

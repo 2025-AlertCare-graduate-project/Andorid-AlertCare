@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
+import org.sopt.android_alertcare.presentation.main.MainScreen
 import org.sopt.android_alertcare.presentation.navigation.MainNavHost
 import org.sopt.android_alertcare.ui.theme.AndroidAlertCareTheme
 import timber.log.Timber

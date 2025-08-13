@@ -34,6 +34,7 @@ import org.sopt.android_alertcare.core.common.ViewModelFactory
 import org.sopt.android_alertcare.presentation.component.FallDetectionCard
 import org.sopt.android_alertcare.presentation.component.MainColorCard
 import org.sopt.android_alertcare.presentation.component.TopBarWithIcon
+import org.sopt.android_alertcare.presentation.navigation.ScreenRoute
 import org.sopt.android_alertcare.presentation.signup.SignUpViewModel
 import org.sopt.android_alertcare.presentation.util.FallDetectionStatus
 import org.sopt.android_alertcare.presentation.util.UiState
@@ -63,8 +64,12 @@ fun MainScreen(
             .fillMaxSize()
             .background(Color.White),
     ) {
-
-        TopBarWithIcon("", icon = painterResource(id = R.drawable.ic_setting), onIconClick = {})
+        Spacer(modifier.height(12.dp))
+        TopBarWithIcon("메인페이지", icon = painterResource(id = R.drawable.ic_setting), onIconClick = {
+            navController.navigate(
+                ScreenRoute.SETTING_SCREEN
+            )
+        })
         Column(
             modifier = Modifier
                 .weight(1f)
