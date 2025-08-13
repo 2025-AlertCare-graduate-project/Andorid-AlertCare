@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,7 +29,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import org.sopt.android_alertcare.core.common.ViewModelFactory
 import org.sopt.android_alertcare.presentation.component.TopBar
-import org.sopt.android_alertcare.presentation.navigation.ScreenRoute
 import org.sopt.android_alertcare.presentation.signup.SignUpViewModel
 import org.sopt.android_alertcare.presentation.util.UiState
 import org.sopt.android_alertcare.ui.theme.AlertTypography
@@ -46,20 +47,22 @@ fun VideoScreen(
     LaunchedEffect(videoId) {
         viewmodel.fetchVideoUrl(videoId)
     }
+
     LaunchedEffect(videoCheckedState) {
         when (videoCheckedState) {
             is UiState.Success -> {
                 onConfirmClick()
+                navController.popBackStack()
             }
 
             else -> Unit
         }
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-
         TopBar("낙상 영상 확인")
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -102,7 +105,13 @@ fun VideoScreen(
 
                 is UiState.Success -> {
                     val videoUrl = (videoUrlState as UiState.Success<String>).data
-                    VideoPlayer(videoUrl = videoUrl)
+                    VideoPlayer(
+                        videoUrl = videoUrl,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.5f)
+                            .clip(RoundedCornerShape(8.dp))
+                    )
                 }
 
                 is UiState.Error -> {
@@ -124,12 +133,13 @@ fun VideoScreen(
 
             val isPatching = videoCheckedState is UiState.Loading
 
+
             Button(
                 onClick = {
-                    viewmodel.patchVideoChecked(videoId)
-                    navController.navigate(ScreenRoute.MAIN_SCREEN) {
-                        popUpTo(ScreenRoute.MAIN_SCREEN) { inclusive = true }
-                        launchSingleTop = true
+                    if (!isPatching) {
+                        viewmodel.patchVideoChecked(videoId)
+                        navController.popBackStack()
+                        onConfirmClick()
                     }
                 },
                 enabled = !isPatching,
@@ -151,9 +161,6 @@ fun VideoScreen(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-
         }
     }
 }
-
-
