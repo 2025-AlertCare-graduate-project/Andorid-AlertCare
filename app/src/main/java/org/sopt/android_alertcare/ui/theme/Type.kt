@@ -17,11 +17,17 @@ private val NanumSquareRound = FontFamily(
 
 object AlertTypography {
 
+    val ExtraBold65 = TextStyle(
+        fontFamily = NanumSquareRound,
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 65.sp
+    )
     val ExtraBold24 = TextStyle(
         fontFamily = NanumSquareRound,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 24.sp
     )
+
 
     val Bold24 = TextStyle(
         fontFamily = NanumSquareRound,
@@ -75,6 +81,12 @@ object AlertTypography {
         fontFamily = NanumSquareRound,
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp
+    )
+
+    val Large40 = TextStyle(
+        fontFamily = NanumSquareRound,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 40.sp
     )
 
     val Large14 = TextStyle(
