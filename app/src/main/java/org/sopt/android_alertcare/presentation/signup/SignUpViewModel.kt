@@ -9,6 +9,7 @@ import org.sopt.android_alertcare.domain.model.LogIn
 import org.sopt.android_alertcare.domain.model.SignUp
 import org.sopt.android_alertcare.domain.model.SignUpResponse
 import org.sopt.android_alertcare.domain.model.VideoCheck
+import org.sopt.android_alertcare.domain.model.VideoDetail
 import org.sopt.android_alertcare.domain.model.VideoList
 import org.sopt.android_alertcare.domain.repository.SignUpRepository
 import org.sopt.android_alertcare.presentation.util.UiState
@@ -26,8 +27,8 @@ class SignUpViewModel(
     val videoListState: StateFlow<UiState<List<VideoList>>> = _videoListState
 
 
-    private val _videoUrlState = MutableStateFlow<UiState<String>>(UiState.Empty)
-    val videoUrlState: StateFlow<UiState<String>> = _videoUrlState
+    private val _videoUrlState = MutableStateFlow<UiState<VideoDetail>>(UiState.Empty)
+    val videoUrlState: StateFlow<UiState<VideoDetail>> = _videoUrlState
 
     private val _loginState = MutableStateFlow<UiState<SignUpResponse>>(UiState.Empty)
     val loginState: StateFlow<UiState<SignUpResponse>> = _loginState
@@ -66,7 +67,8 @@ class SignUpViewModel(
             _videoListState.value = result.fold(
                 onSuccess = {
                     Timber.d("영상 리스트 불러오기 성공: $it")
-                    UiState.Success(it)
+//                    UiState.Success(it)
+                    UiState.Success(it.sortedByDescending { v -> v.id })
                 },
                 onFailure = {
                     Timber.e("영상 리스트 불러오기 실패: ${it.message}")
