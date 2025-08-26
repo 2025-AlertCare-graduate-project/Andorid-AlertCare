@@ -7,6 +7,7 @@ import org.sopt.android_alertcare.domain.model.LogIn
 import org.sopt.android_alertcare.domain.model.SignUp
 import org.sopt.android_alertcare.domain.model.SignUpResponse
 import org.sopt.android_alertcare.domain.model.VideoCheck
+import org.sopt.android_alertcare.domain.model.VideoDetail
 import org.sopt.android_alertcare.domain.model.VideoList
 import org.sopt.android_alertcare.domain.repository.SignUpRepository
 
@@ -29,9 +30,9 @@ class SignUpRepositoryImpl(
             ?: throw IllegalStateException("영상 리스트 응답이 null")
     }
 
-    override suspend fun videoDetail(id: Long): Result<String> = runCatching {
+    override suspend fun videoDetail(id: Long): Result<VideoDetail> = runCatching {
         val response = signUpService.videoDetail(id)
-        response.data ?: throw IllegalStateException("영상 상세 응답이 null")
+        response.data?.toDomain() ?: throw IllegalStateException("영상 상세 응답이 null")
     }
 
     override suspend fun logIn(logIn: LogIn): Result<SignUpResponse> = runCatching {
@@ -40,6 +41,7 @@ class SignUpRepositoryImpl(
         response.data?.toDomain()
             ?: throw IllegalStateException("로그인 응답이 null")
     }
+
     override suspend fun videoChecked(id: Long): Result<VideoCheck> = runCatching {
         val response = signUpService.videoCheck(id)
         response.data?.toDomain()

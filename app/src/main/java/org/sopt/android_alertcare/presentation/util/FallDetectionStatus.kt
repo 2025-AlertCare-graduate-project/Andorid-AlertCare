@@ -31,7 +31,7 @@ enum class FallDetectionStatus(
     CHECKED(
         label = "낙상 감지",
         buttonText = "확인 완료",
-        buttonEnabled = false,
+        buttonEnabled = true,
         buttonTextColor = Color.Gray,
         buttonBorderColor = Color.LightGray,
         buttonBackgroundColor = Color(0xFFF5F5F5)

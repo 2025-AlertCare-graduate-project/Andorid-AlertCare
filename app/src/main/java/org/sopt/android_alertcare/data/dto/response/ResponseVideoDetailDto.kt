@@ -5,6 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ResponseVideoDetailDto(
-    @SerialName("id")
-    val id: Long,
+    @SerialName("videoUrl")
+    val videoUrl: String,
+    @SerialName("fallDetectTime")
+    val fallDetectTime: String,
 )

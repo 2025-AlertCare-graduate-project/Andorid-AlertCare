@@ -2,6 +2,7 @@ package org.sopt.android_alertcare.presentation.video
 
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,7 +18,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 
 @Composable
-fun VideoPlayer(videoUrl: String) {
+fun VideoPlayer(videoUrl: String, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val exoPlayer = remember(videoUrl) {
         ExoPlayer.Builder(context).build().apply {
@@ -39,9 +40,6 @@ fun VideoPlayer(videoUrl: String) {
                 useController = true
             }
         },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .clip(RoundedCornerShape(8.dp))
+        modifier = modifier
     )
 }

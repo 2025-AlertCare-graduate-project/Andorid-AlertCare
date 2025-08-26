@@ -1,14 +1,18 @@
 package org.sopt.android_alertcare.presentation.video
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -20,14 +24,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import org.sopt.android_alertcare.core.common.ViewModelFactory
+import org.sopt.android_alertcare.domain.model.VideoDetail
 import org.sopt.android_alertcare.presentation.component.TopBar
-import org.sopt.android_alertcare.presentation.navigation.ScreenRoute
 import org.sopt.android_alertcare.presentation.signup.SignUpViewModel
 import org.sopt.android_alertcare.presentation.util.UiState
 import org.sopt.android_alertcare.ui.theme.AlertTypography
@@ -43,32 +48,30 @@ fun VideoScreen(
     val videoUrlState by viewmodel.videoUrlState.collectAsState()
     val videoCheckedState by viewmodel.videoCheckedState.collectAsState()
 
-    LaunchedEffect(videoId) {
-        viewmodel.fetchVideoUrl(videoId)
-    }
+    LaunchedEffect(videoId) { viewmodel.fetchVideoUrl(videoId) }
+
     LaunchedEffect(videoCheckedState) {
         when (videoCheckedState) {
             is UiState.Success -> {
                 onConfirmClick()
+                navController.popBackStack()
             }
 
             else -> Unit
         }
     }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
 
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
         TopBar("낙상 영상 확인")
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(Modifier.height(16.dp))
 
         Column(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .navigationBarsPadding()
         ) {
-
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -85,7 +88,7 @@ fun VideoScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(Modifier.height(12.dp))
 
             when (videoUrlState) {
                 is UiState.Loading -> {
@@ -95,14 +98,42 @@ fun VideoScreen(
                             .height(200.dp)
                             .background(Color(0xFFE0E0E0), shape = RoundedCornerShape(8.dp)),
                         contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
-                    }
+                    ) { CircularProgressIndicator() }
                 }
 
                 is UiState.Success -> {
-                    val videoUrl = (videoUrlState as UiState.Success<String>).data
-                    VideoPlayer(videoUrl = videoUrl)
+                    val detail = (videoUrlState as UiState.Success<VideoDetail>).data
+                    val videoUrl = detail.videoUrl
+                    val fallDetectTime = detail.fallDetectTime
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "낙상 시각: ",
+                            style = AlertTypography.Bold16,
+                            color = Color.Black
+                        )
+                        Spacer(Modifier.width(4.dp))
+                        Text(
+                            text = fallDetectTime,
+                            style = AlertTypography.Bold16,
+                        )
+                    }
+
+                    Spacer(Modifier.height(8.dp))
+
+                    VideoPlayer(
+                        videoUrl = videoUrl,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.5f)
+                            .clip(RoundedCornerShape(8.dp))
+                    )
                 }
 
                 is UiState.Error -> {
@@ -112,24 +143,22 @@ fun VideoScreen(
                             .height(300.dp)
                             .background(Color.LightGray, shape = RoundedCornerShape(8.dp)),
                         contentAlignment = Alignment.Center
-                    ) {
-                        Text("영상을 불러오지 못했습니다.", color = Color.Red)
-                    }
+                    ) { Text("영상을 불러오지 못했습니다.", color = Color.Red) }
                 }
 
                 else -> {}
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(Modifier.weight(1f))
 
             val isPatching = videoCheckedState is UiState.Loading
 
             Button(
                 onClick = {
-                    viewmodel.patchVideoChecked(videoId)
-                    navController.navigate(ScreenRoute.MAIN_SCREEN) {
-                        popUpTo(ScreenRoute.MAIN_SCREEN) { inclusive = true }
-                        launchSingleTop = true
+                    if (!isPatching) {
+                        viewmodel.patchVideoChecked(videoId)
+                        navController.popBackStack()
+                        onConfirmClick()
                     }
                 },
                 enabled = !isPatching,
@@ -141,19 +170,13 @@ fun VideoScreen(
                 colors = ButtonDefaults.buttonColors(Orange)
             ) {
                 if (isPatching) {
-                    CircularProgressIndicator(
-                        strokeWidth = 2.dp,
-                        color = Color.White
-                    )
+                    CircularProgressIndicator(strokeWidth = 2.dp, color = Color.White)
                 } else {
-                    Text(text = "확인 완료", fontSize = 16.sp)
+                    Text("확인 완료", fontSize = 16.sp)
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
+            Spacer(Modifier.height(16.dp))
         }
     }
 }
-
-
