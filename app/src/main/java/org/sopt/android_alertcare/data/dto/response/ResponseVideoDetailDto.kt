@@ -9,4 +9,6 @@ data class ResponseVideoDetailDto(
     val videoUrl: String,
     @SerialName("fallDetectTime")
     val fallDetectTime: String,
+    @SerialName("careReceiverPhoneNumber")
+    val careReceiverPhoneNumber: String,
 )

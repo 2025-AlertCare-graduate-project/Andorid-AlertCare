@@ -6,5 +6,6 @@ import org.sopt.android_alertcare.domain.model.VideoDetail
 fun ResponseVideoDetailDto.toDomain(): VideoDetail =
     VideoDetail(
         videoUrl = videoUrl,
-        fallDetectTime = fallDetectTime
+        fallDetectTime = fallDetectTime,
+        careReceiverPhoneNumber = careReceiverPhoneNumber,
     )
