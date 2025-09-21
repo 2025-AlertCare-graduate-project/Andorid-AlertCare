@@ -8,9 +8,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -52,12 +56,11 @@ import org.sopt.android_alertcare.ui.theme.Orange
 import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
-
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    phoneNumber: String,
+    phoneNumber: String ,
     careReceiverName: String,
     viewmodel: SignUpViewModel = viewModel(factory = ViewModelFactory()),
 ) {
@@ -84,8 +87,13 @@ fun MainScreen(
         Spacer(Modifier.height(12.dp))
         TopBarWithIcon(
             "메인페이지",
-            icon = painterResource(id = R.drawable.ic_setting),
-            onIconClick = { navController.navigate(ScreenRoute.SETTING_SCREEN) }
+            iconLeft = painterResource(id = R.drawable.ic_setting),
+            iconRight = painterResource(id = R.drawable.ic_graph),
+            onIconLeftClick = { navController.navigate(ScreenRoute.SETTING_SCREEN) },
+            onIconRightClick = {
+                navController.navigate("${ScreenRoute.DAILY_CHART_SCREEN}/$phoneNumber")
+
+            }
         )
 
         Box(
@@ -93,14 +101,17 @@ fun MainScreen(
                 .weight(1f)
                 .fillMaxWidth()
                 .statusBarsPadding()
+                .navigationBarsPadding()
                 .nestedScroll(refreshState.nestedScrollConnection)
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(bottom = 16.dp)
+                contentPadding = PaddingValues(
+                    bottom = 16.dp
+                )
             ) {
                 item {
-                    Spacer(Modifier.height(40.dp))
+                    Spacer(Modifier.height(30.dp))
 
                     Column(
                         modifier = Modifier.fillMaxWidth(),
@@ -167,7 +178,7 @@ fun MainScreen(
                                         video.checkedByUser
                                     )
                                     if (status != FallDetectionStatus.EXPIRED) {
-                                        navController.navigate("video_screen/${video.id}")
+                                        navController.navigate("video_screen/${video.id}/${phoneNumber}/${careReceiverName}")
                                         Timber.tag("df").d(video.id.toString())
                                     }
                                 }
