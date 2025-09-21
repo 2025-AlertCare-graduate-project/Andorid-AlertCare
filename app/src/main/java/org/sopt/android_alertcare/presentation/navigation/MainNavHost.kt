@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import org.sopt.android_alertcare.presentation.SplashScreen
+import org.sopt.android_alertcare.presentation.info.DailyChartScreen
 import org.sopt.android_alertcare.presentation.login.SignUpCompleteScreen
 import org.sopt.android_alertcare.presentation.login.SignUpScreen
 import org.sopt.android_alertcare.presentation.main.MainScreen
@@ -72,15 +73,47 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier = Modifier)
         }
         composable(ScreenRoute.SIGN_UP_SCREEN) { SignUpScreen(navController = navController) }
 
+//        composable(
+//            route = VIDEO_SCREEN,
+//            arguments = listOf(navArgument("videoId") { type = NavType.LongType })
+//        ) { backStackEntry ->
+//            val videoId = backStackEntry.arguments?.getLong("videoId") ?: return@composable
+//            VideoScreen(videoId = videoId, navController = navController)
+//        }
+
         composable(
-            route = VIDEO_SCREEN,
-            arguments = listOf(navArgument("videoId") { type = NavType.LongType })
+            route = ScreenRoute.VIDEO_SCREEN,
+            arguments = listOf(
+                navArgument("videoId") { type = NavType.LongType },
+                navArgument("phoneNumber") { type = NavType.StringType },
+                navArgument("careReceiverName") { type = NavType.StringType }
+            )
         ) { backStackEntry ->
             val videoId = backStackEntry.arguments?.getLong("videoId") ?: return@composable
-            VideoScreen(videoId = videoId, navController = navController)
+            val phoneNumber = backStackEntry.arguments?.getString("phoneNumber") ?: ""
+            val careReceiverName = backStackEntry.arguments?.getString("careReceiverName") ?: ""
+
+            VideoScreen(
+                videoId = videoId,
+                navController = navController,
+                guardianName = careReceiverName,
+                guardianPhone = phoneNumber
+            )
         }
 
         composable(ScreenRoute.SETTING_SCREEN) { SettingsScreen(navController = navController) }
+
+        composable(
+            route = "${ScreenRoute.DAILY_CHART_SCREEN}/{phoneNumber}",
+            arguments = listOf(navArgument("phoneNumber") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val phoneNumber = backStackEntry.arguments?.getString("phoneNumber") ?: ""
+
+            DailyChartScreen(
+                phoneNumber = phoneNumber,
+                navController = navController
+            )
+        }
 
     }
 }

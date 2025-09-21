@@ -33,8 +33,8 @@ enum class FallDetectionStatus(
         buttonText = "확인 완료",
         buttonEnabled = true,
         buttonTextColor = Color.Gray,
-        buttonBorderColor = Color.LightGray,
-        buttonBackgroundColor = Color(0xFFF5F5F5)
+        buttonBorderColor = Orange,
+        buttonBackgroundColor = Orange
     ),
 
     /**

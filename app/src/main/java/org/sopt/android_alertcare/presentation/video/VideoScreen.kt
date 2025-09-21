@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,14 +27,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import org.sopt.android_alertcare.R
 import org.sopt.android_alertcare.core.common.ViewModelFactory
 import org.sopt.android_alertcare.domain.model.VideoDetail
 import org.sopt.android_alertcare.presentation.component.TopBar
 import org.sopt.android_alertcare.presentation.signup.SignUpViewModel
+import org.sopt.android_alertcare.presentation.util.PhoneCall
 import org.sopt.android_alertcare.presentation.util.UiState
 import org.sopt.android_alertcare.ui.theme.AlertTypography
 import org.sopt.android_alertcare.ui.theme.Orange
@@ -43,10 +48,14 @@ fun VideoScreen(
     videoId: Long,
     navController: NavController,
     viewmodel: SignUpViewModel = viewModel(factory = ViewModelFactory()),
+    guardianName: String = "000",
+    guardianPhone: String = "010-9236-9709",
     onConfirmClick: () -> Unit = {}
 ) {
     val videoUrlState by viewmodel.videoUrlState.collectAsState()
     val videoCheckedState by viewmodel.videoCheckedState.collectAsState()
+
+    val context = LocalContext.current
 
     LaunchedEffect(videoId) { viewmodel.fetchVideoUrl(videoId) }
 
@@ -152,6 +161,34 @@ fun VideoScreen(
             Spacer(Modifier.weight(1f))
 
             val isPatching = videoCheckedState is UiState.Loading
+
+            Button(
+                onClick = { PhoneCall(context, guardianPhone) },
+                enabled = !isPatching,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Orange)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_call),
+                        contentDescription = null,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "${guardianName}에게 전화 걸기",
+                        style = AlertTypography.Bold16,
+                        color = Color.White
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             Button(
                 onClick = {

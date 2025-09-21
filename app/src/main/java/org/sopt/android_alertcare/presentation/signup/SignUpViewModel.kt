@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.sopt.android_alertcare.domain.model.DailyChart
 import org.sopt.android_alertcare.domain.model.LogIn
 import org.sopt.android_alertcare.domain.model.SignUp
 import org.sopt.android_alertcare.domain.model.SignUpResponse
@@ -14,6 +15,7 @@ import org.sopt.android_alertcare.domain.model.VideoList
 import org.sopt.android_alertcare.domain.repository.SignUpRepository
 import org.sopt.android_alertcare.presentation.util.UiState
 import timber.log.Timber
+import java.time.LocalDate
 
 
 class SignUpViewModel(
@@ -33,9 +35,11 @@ class SignUpViewModel(
     private val _loginState = MutableStateFlow<UiState<SignUpResponse>>(UiState.Empty)
     val loginState: StateFlow<UiState<SignUpResponse>> = _loginState
 
-
     private val _videoCheckedState = MutableStateFlow<UiState<VideoCheck>>(UiState.Empty)
     val videoCheckedState: StateFlow<UiState<VideoCheck>> = _videoCheckedState
+
+    private val _dailyChartState = MutableStateFlow<UiState<DailyChart>>(UiState.Empty)
+    val dailyChartState: StateFlow<UiState<DailyChart>> = _dailyChartState
 
     fun signUp(signUp: SignUp, onSuccess: (SignUpResponse) -> Unit = {}) {
         viewModelScope.launch {
@@ -134,5 +138,24 @@ class SignUpViewModel(
         }
     }
 
+    fun getDailyChart(phoneNumber: String, date: LocalDate) {
+        viewModelScope.launch {
+            _dailyChartState.value = UiState.Loading
+
+            val result = signUpRepository.dailyChart(phoneNumber, date)
+
+            _dailyChartState.value = result.fold(
+                onSuccess = {
+                    Timber.d("daily chart 불러오기 성공: $it")
+                    UiState.Success(it)
+                },
+                onFailure = {
+                    Timber.e("daily chart 불러오기 실패: ${it.message}")
+                    UiState.Error(it.message ?: "daily chart 불러오는 중 오류 발생")
+
+                }
+            )
+        }
+    }
 
 }

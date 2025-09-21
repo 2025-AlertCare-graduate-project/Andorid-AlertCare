@@ -2,6 +2,7 @@ package org.sopt.android_alertcare.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,11 +23,14 @@ import androidx.compose.ui.unit.dp
 import org.sopt.android_alertcare.ui.theme.AlertTypography
 import org.sopt.android_alertcare.ui.theme.Orange
 
+
 @Composable
 fun TopBarWithIcon(
     title: String,
-    icon: Painter,
-    onIconClick: () -> Unit = {},
+    iconLeft: Painter,
+    iconRight: Painter,
+    onIconLeftClick: () -> Unit = {},
+    onIconRightClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -35,38 +39,41 @@ fun TopBarWithIcon(
             .statusBarsPadding()
             .background(color = Color.White)
     ) {
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(horizontal = 12.dp, vertical = 10.dp)
         ) {
-            Spacer(modifier = Modifier.width(32.dp))
+            Row(
+                modifier = Modifier.align(Alignment.CenterEnd)
+            ) {
+                Icon(
+                    painter = iconLeft,
+                    contentDescription = "",
+                    tint = Color.Black,
+                    modifier = Modifier.clickable(onClick = onIconLeftClick)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    painter = iconRight,
+                    contentDescription = "",
+                    tint = Color.Black,
+                    modifier = Modifier.clickable(onClick = onIconRightClick)
+                )
+            }
 
             Text(
                 text = title,
                 style = AlertTypography.Bold20,
                 color = Color.Black,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.align(Alignment.Center),
                 textAlign = TextAlign.Center
             )
-
-
-            Icon(
-                painter = icon,
-                contentDescription = "",
-                tint = Color.Black,
-                modifier = Modifier
-                    .clickable(onClick = onIconClick)
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-
         }
 
         HorizontalDivider(
-            color = Orange.copy(alpha = 0.4f), thickness = 1.dp
+            color = Orange.copy(alpha = 0.4f),
+            thickness = 1.dp
         )
     }
 }
