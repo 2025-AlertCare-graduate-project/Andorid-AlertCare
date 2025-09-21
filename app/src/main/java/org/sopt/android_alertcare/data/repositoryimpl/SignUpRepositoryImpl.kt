@@ -3,6 +3,7 @@ package org.sopt.android_alertcare.data.repositoryimpl
 import org.sopt.android_alertcare.data.mapper.toData.toData
 import org.sopt.android_alertcare.data.mapper.toDomain.toDomain
 import org.sopt.android_alertcare.data.service.SignUpService
+import org.sopt.android_alertcare.domain.model.DailyChart
 import org.sopt.android_alertcare.domain.model.LogIn
 import org.sopt.android_alertcare.domain.model.SignUp
 import org.sopt.android_alertcare.domain.model.SignUpResponse
@@ -10,6 +11,7 @@ import org.sopt.android_alertcare.domain.model.VideoCheck
 import org.sopt.android_alertcare.domain.model.VideoDetail
 import org.sopt.android_alertcare.domain.model.VideoList
 import org.sopt.android_alertcare.domain.repository.SignUpRepository
+import java.time.LocalDate
 
 
 class SignUpRepositoryImpl(
@@ -48,5 +50,10 @@ class SignUpRepositoryImpl(
             ?: throw IllegalStateException("video 체크 여부가 null")
     }
 
+    override suspend fun dailyChart(phoneNumber: String, date: LocalDate): Result<DailyChart> =
+        runCatching {
+            val response = signUpService.dailyChart(phoneNumber, date)
+            response.data?.toDomain() ?: throw IllegalStateException("daily chart가 null인 상태")
+        }
 
 }
