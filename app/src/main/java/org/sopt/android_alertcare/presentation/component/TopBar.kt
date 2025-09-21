@@ -37,9 +37,8 @@ fun TopBar(
             color = Color.Black
         )
         HorizontalDivider(
-            Modifier
-                .fillMaxWidth()
-                .background(color = Orange)
+            color = Orange.copy(alpha = 0.4f),
+            thickness = 1.dp
         )
     }
 }

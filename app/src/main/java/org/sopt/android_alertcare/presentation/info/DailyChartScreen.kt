@@ -8,13 +8,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,7 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -58,9 +58,15 @@ fun DailyChartScreen(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .imePadding()
+
     ) {
+        Spacer(modifier = Modifier.height(12.dp))
+
         TopBar("${selectedDate.monthValue}/${selectedDate.dayOfMonth} 일일 활동량")
+        Spacer(modifier = Modifier.height(20.dp))
 
         Column(
             modifier = Modifier
@@ -74,11 +80,12 @@ fun DailyChartScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp)
+                    .padding(horizontal = 20.dp)
+                    .padding(bottom = 10.dp)
             )
 
-            Divider(
-                color = Color(0xFFE5E5E5),
+            HorizontalDivider(
+                color = Orange.copy(alpha = 0.4f),
                 thickness = 1.dp
             )
 
@@ -205,16 +212,6 @@ fun DailyChartScreen(
                                 style = AlertTypography.Bold16,
                                 color = Color.Black
                             )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            (dailyChartState as UiState.Error).message?.let {
-                                Text(
-                                    text = it,
-                                    style = AlertTypography.Regular14,
-                                    color = Color(0xFF666666),
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(16.dp))
 
                         }
                     }
